@@ -1,0 +1,31 @@
+{
+  "name": "highlander_engineering_hardware_app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.2",
+    "axios": "^0.26.0",
+    "child_process": "^1.0.2",
+    "dotenv": "^16.0.0",
+    "google-spreadsheet": "^3.2.0",
+    "next": "12.1.0",
+    "next-absolute-url": "^1.2.2",
+    "next-auth": "^4.2.1",
+    "nodemailer": "^6.7.2",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "postcss": "^8.4.7",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "tailwindcss": "^3.0.23"
+  },
+  "devDependencies": {
+    "eslint": "8.10.0",
+    "eslint-config-next": "12.1.0"
+  }
+}
