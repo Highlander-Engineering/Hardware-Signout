@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 export default function RequestPage({ data }) {
   const router = useRouter();
 
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const [name, setName] = useState('');
   const [school, setSchool] = useState('');
   const [email, setEmail] = useState('');
@@ -67,97 +67,101 @@ export default function RequestPage({ data }) {
         </div>
       </>
     );
-  return (
-    <div className="h-screen overflow-hidden bg-he-beige">
-      <Head>
-        <title>Request Component</title>
-      </Head>
-      <button
-        onClick={() => {
-          router.push('/');
-        }}
-        className="text-xl ml-2 mt-2 px-2 rounded text-he-purple hover:bg-he-purple hover:text-white"
-      >
-        {' '}
-        {'← '}Home
-      </button>
-      <h1 className="text-3xl font-bold text-center my-10 text-he-purple">
-        Request Hardware Component
-      </h1>
-      <div className="flex flex-col gap-3 mx-4">
-        <input
-          placeholder="Name"
-          onChange={(e) => setName(e.target.value)}
-          required={true}
-          className="pl-3 py-1 border rounded-lg"
-        />
-        <input
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-          required={true}
-          className="pl-3 py-1 border rounded-lg"
-        />
-        <input
-          placeholder="School"
-          onChange={(e) => setSchool(e.target.value)}
-          required={true}
-          className="pl-3 py-1 border rounded-lg"
-        />
-        <span>You are...</span>
-        <div className="flex items-center">
-          <input
-            type="radio"
-            value="Student"
-            name="profession"
-            id="profession-student"
-            onChange={(e) => setProfession('Student')}
-          />{' '}
-          <label htmlFor="profession-student" className="mr-4">
-            Student
-          </label>
-          <input
-            type="radio"
-            value="Teacher"
-            name="profession"
-            id="profession-teacher"
-            onChange={(e) => setProfession('Teacher')}
-          />{' '}
-          <label htmlFor="profession-teacher"> Teacher</label>
-        </div>
-        <h1 className="text-2xl mt-5">Available Components</h1>
-        {data.map((item, i) => {
-          return (
-            <>
-              <div className="flex gap-5" key={i}>
-                <h1>
-                  <span className="font-bold">{item.component}</span> (
-                  {item.available} Left)
-                </h1>
-                <input
-                  placeholder="Amount"
-                  type={'number'}
-                  onChange={(e) => {
-                    setAmounts({
-                      ...amounts,
-                      [item.component]: +e.target.value,
-                    });
-                  }}
-                  className="px-2 rounded-md outline-none py-1"
-                />
-              </div>
-            </>
-          );
-        })}
+  console.log(session);
+  if (status === 'authenticated')
+    return (
+      <div className="h-screen overflow-hidden bg-he-beige">
+        <Head>
+          <title>Request Component</title>
+        </Head>
         <button
-          onClick={addOnClick}
-          className="border rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white"
+          onClick={() => {
+            router.push('/');
+          }}
+          className="text-xl ml-2 mt-2 px-2 rounded text-he-purple hover:bg-he-purple hover:text-white"
         >
           {' '}
-          Request
+          {'← '}Home
         </button>
+        <h1 className="text-3xl font-bold text-center my-10 text-he-purple">
+          Request Hardware Component
+        </h1>
+        <div className="flex flex-col gap-3 mx-4">
+          <input
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+            required={true}
+            className="pl-3 py-1 border rounded-lg"
+          />
+          <input
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={session.user.email}
+            readOnly={true}
+            required={true}
+            className="pl-3 py-1 border rounded-lg cursor-default select-none"
+          />
+          <input
+            placeholder="School"
+            onChange={(e) => setSchool(e.target.value)}
+            required={true}
+            className="pl-3 py-1 border rounded-lg"
+          />
+          <span>You are...</span>
+          <div className="flex items-center">
+            <input
+              type="radio"
+              value="Student"
+              name="profession"
+              id="profession-student"
+              onChange={(e) => setProfession('Student')}
+            />{' '}
+            <label htmlFor="profession-student" className="mr-4">
+              Student
+            </label>
+            <input
+              type="radio"
+              value="Teacher"
+              name="profession"
+              id="profession-teacher"
+              onChange={(e) => setProfession('Teacher')}
+            />{' '}
+            <label htmlFor="profession-teacher"> Teacher</label>
+          </div>
+          <h1 className="text-2xl mt-5">Available Components</h1>
+          {data.map((item, i) => {
+            return (
+              <>
+                <div className="flex gap-5" key={i}>
+                  <h1>
+                    <span className="font-bold">{item.component}</span> (
+                    {item.available} Left)
+                  </h1>
+                  <input
+                    placeholder="Amount"
+                    type={'number'}
+                    onChange={(e) => {
+                      setAmounts({
+                        ...amounts,
+                        [item.component]: +e.target.value,
+                      });
+                    }}
+                    className="px-2 rounded-md outline-none py-1"
+                  />
+                </div>
+              </>
+            );
+          })}
+          <button
+            onClick={addOnClick}
+            className="border rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white"
+          >
+            {' '}
+            Request
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 export async function getServerSideProps(context) {
   const { origin } = absoluteUrl(context.req);
