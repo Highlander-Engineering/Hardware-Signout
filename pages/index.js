@@ -10,12 +10,14 @@ export default function Home() {
   const router = useRouter();
   if (status === 'loading') return null;
   return (
-    <div className="h-screen flex justify-center items-center bg-he-beige">
+    <div className="h-screen flex justify-center items-center flex-col bg-he-beige">
       <Head>
         <title>Highlander Engineering Sign Out</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <h1 className="text-4xl font-bold text-he-purple my-10">
+        Highlander Engineering Hardware Request
+      </h1>
       {status === 'unauthenticated' && (
         <div className="">
           <button
