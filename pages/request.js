@@ -78,12 +78,12 @@ export default function RequestPage({ data }) {
           onClick={() => {
             router.push('/');
           }}
-          className="text-xl ml-2 mt-2 px-2 rounded text-he-purple hover:bg-he-purple hover:text-white"
+          className="text-xl ml-2 mt-6 px-2 rounded text-he-purple hover:bg-he-purple hover:text-white"
         >
           {' '}
           {'← '}Home
         </button>
-        <h1 className="text-3xl font-bold text-center my-10 text-he-purple">
+        <h1 className="text-3xl font-bold text-center mb-10 text-he-purple">
           Request Hardware Component
         </h1>
         <div className="flex flex-col gap-3 mx-4">
@@ -116,7 +116,7 @@ export default function RequestPage({ data }) {
               id="profession-student"
               onChange={(e) => setProfession('Student')}
             />{' '}
-            <label htmlFor="profession-student" className="mr-4">
+            <label htmlFor="profession-student" className="mr-4 ml-1">
               Student
             </label>
             <input
@@ -126,7 +126,10 @@ export default function RequestPage({ data }) {
               id="profession-teacher"
               onChange={(e) => setProfession('Teacher')}
             />{' '}
-            <label htmlFor="profession-teacher"> Teacher</label>
+            <label htmlFor="profession-teacher" className="ml-1">
+              {' '}
+              Teacher
+            </label>
           </div>
           <h1 className="text-2xl mt-5">Available Components</h1>
           {data.map((item, i) => {
@@ -154,7 +157,7 @@ export default function RequestPage({ data }) {
           })}
           <button
             onClick={addOnClick}
-            className="border rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white"
+            className="border rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white transition-all duration-200"
           >
             {' '}
             Request
