@@ -15,7 +15,13 @@ export default function Home() {
         <title>Highlander Engineering Sign Out</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="text-4xl font-bold text-he-purple my-10">
+      <Image
+        src="/assets/transparent_logo.png"
+        width="300"
+        height="300"
+        alt="Logo"
+      />
+      <h1 className="text-4xl font-bold text-he-purple mb-10">
         Highlander Engineering Hardware Request
       </h1>
       {status === 'unauthenticated' && (
