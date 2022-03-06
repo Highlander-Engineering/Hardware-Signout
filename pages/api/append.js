@@ -18,43 +18,59 @@ export default async function handler(req, res) {
   const sheet = doc.sheetsById[pageIds.currentRequests];
   const totalSheet = doc.sheetsById[pageIds.total];
   const componentsCombinedArr = [];
-  Object.keys(reqData.amounts).forEach((key) => {
-    componentsCombinedArr.push({
-      Name: reqData.name,
-      Email: reqData.email,
-      School: reqData.school,
-      Component: key,
-      Profession: reqData.profession,
-      Amount: reqData.amounts[key],
-      ['Date Out']: new Date(),
-    });
-  });
 
   try {
     await sheet.addRows(componentsCombinedArr);
     const TotalInventoryRows = await totalSheet.getRows();
-    // await TotalInventoryRows.forEach((item) => {
-    //   if (item['Component'] in reqData.amounts) {
-    //     item['Available Stock'] -= reqData.amounts[item['Component']];
-    //     item.save();
-    //   }
-    // });
-    const { origin } = absoluteUrl(req);
 
-    // Sending confirmation email
-    axios
-      .post(`${origin}/api/sendEmail`, {
-        name: reqData.name,
-        email: reqData.email,
+    const checkValidStock = new Promise((resolve, reject) => {
+      TotalInventoryRows.forEach((item) => {
+        if (item['Component'] in reqData.amounts) {
+          if (reqData.amounts[item['Component']] > +item['Available Stock']) {
+            reject(new Error('Not enough stock'));
+            // res
+            //   .status(200)
+            //   .json({ status: 'error', message: 'Not enough stock' });
+            // return;
+          }
+        }
+      });
+      resolve('Pass');
+    });
+    checkValidStock
+      .then(() => {
+        Object.keys(reqData.amounts).forEach((key) => {
+          componentsCombinedArr.push({
+            Name: reqData.name,
+            Email: reqData.email,
+            School: reqData.school,
+            Component: key,
+            Profession: reqData.profession,
+            Amount: reqData.amounts[key],
+            ['Date Out']: new Date(),
+          });
+        });
+
+        // Sending confirmation email
+        const { origin } = absoluteUrl(req);
+
+        axios
+          .post(`${origin}/api/sendEmail`, {
+            name: reqData.name,
+            email: reqData.email,
+          })
+          .then(function () {
+            return res.status(200).json({ status: 'Sent' });
+          })
+          .catch(function (err) {
+            console.log(err);
+            return res.status(500).json({ status: 'error' });
+          });
       })
-      .then(function () {
-        return res.status(200).json({ status: 'Sent' });
-      })
-      .catch(function (err) {
-        console.log(err);
-        return res.status(500).json({ status: 'Error' });
+      .catch((err) => {
+        res.status(200).json({ status: 'error', message: 'Not enough stock' });
       });
   } catch {
-    return res.status(500).json({ status: 'Error' });
+    return res.status(500).json({ status: 'error' });
   }
 }

@@ -19,7 +19,7 @@ export default function RequestPage({ data }) {
     data.reduce((obj, item) => Object.assign(obj, { [item.component]: 0 }), {})
   );
 
-  const addOnClick = () => {
+  const addOnClick = async () => {
     try {
       setName(session.user.name);
       setEmail(session.user.email);
@@ -36,14 +36,7 @@ export default function RequestPage({ data }) {
     if (!validateEmail(email)) {
       return alert('Invalid email address');
     }
-    Array.of(...Object.keys(filteredAmounts)).forEach((key) => {
-      const stockItem = data.find((item) => item.component === key);
-      if (amounts[key] > stockItem.available) {
-        return alert("You can't request more than available stock");
-      } else if (amounts[key] < 0) {
-        return alert('Invalid number of stock');
-      }
-    });
+
     axios
       .post('/api/append', {
         data: {
@@ -55,10 +48,14 @@ export default function RequestPage({ data }) {
         },
       })
       .then(function (res) {
-        alert(
-          'Request sent, please check your inbox for a confirmation email!'
-        );
-        router.reload(window.location.pathname);
+        if (res.data.status === 'error') {
+          return alert(res.data.message);
+        } else {
+          alert(
+            'Request sent, please check your inbox for a confirmation email!'
+          );
+          router.reload(window.location.pathname);
+        }
       })
       .catch(function (error) {
         alert('Error, try again later');
