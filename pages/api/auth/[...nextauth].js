@@ -25,7 +25,6 @@ export default NextAuth({
       if (account?.accessToken) {
         token.accessToken = account.accessToken;
       }
-      console.log(token.token);
       return token.token;
     },
     redirect: async (url, _baseUrl) => {
