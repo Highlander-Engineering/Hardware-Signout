@@ -73,7 +73,7 @@ export default function RequestPage({ data }) {
     );
   if (status === 'authenticated')
     return (
-      <div className="h-screen overflow-hidden bg-he-beige">
+      <div className=" bg-he-beige">
         <Head>
           <title>Request Component</title>
         </Head>
@@ -144,32 +144,42 @@ export default function RequestPage({ data }) {
             </label>
           </div>
           <h1 className="text-2xl mt-5">Available Components</h1>
-          {data.map((item, i) => {
-            return (
-              <>
-                <div className="flex gap-5" key={i}>
-                  <h1>
-                    <span className="font-bold">{item.component}</span> (
-                    {item.available} Left)
-                  </h1>
-                  <input
-                    placeholder="Amount"
-                    type={'number'}
-                    onChange={(e) => {
-                      setAmounts({
-                        ...amounts,
-                        [item.component]: +e.target.value,
-                      });
-                    }}
-                    className="px-2 rounded-md outline-none py-1"
-                  />
-                </div>
-              </>
-            );
-          })}
+          <div className="grid grid-cols-2">
+            {data.map((item, i) => {
+              return (
+                <>
+                  <div className="flex gap-5 items-center" key={i}>
+                    <h1>
+                      <span className="font-bold">{item.component}</span> (
+                      {item.available} Left)
+                    </h1>
+                    <input
+                      placeholder="Amount"
+                      type={'number'}
+                      onChange={(e) => {
+                        setAmounts({
+                          ...amounts,
+                          [item.component]: +e.target.value,
+                        });
+                      }}
+                      className="px-2 rounded-md outline-none py-1"
+                    />
+                    <div>
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.component}
+                        height="100"
+                        width="100"
+                      />
+                    </div>
+                  </div>
+                </>
+              );
+            })}
+          </div>
           <button
             onClick={addOnClick}
-            className="border rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white transition-all duration-200"
+            className="border border-gray-700 rounded py-2 text-xl text-he-purple hover:bg-he-purple hover:text-white transition-all duration-200 mb-5"
           >
             {' '}
             Request

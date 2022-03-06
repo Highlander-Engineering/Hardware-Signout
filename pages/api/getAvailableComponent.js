@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       availableComponents.push({
         component: item['Component'],
         available: item['Available Stock'],
+        imageUrl: item['Image URL'],
       });
     }
   });
