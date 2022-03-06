@@ -11,19 +11,26 @@ export default function RequestPage({ data }) {
   const router = useRouter();
 
   const { status, data: session } = useSession();
-  const [name, setName] = useState(session.user?.name || '');
+  const [name, setName] = useState('');
   const [school, setSchool] = useState('');
-  const [email, setEmail] = useState(session.user?.email || '');
+  const [email, setEmail] = useState('');
   const [profession, setProfession] = useState('');
   const [amounts, setAmounts] = useState(
     data.reduce((obj, item) => Object.assign(obj, { [item.component]: 0 }), {})
   );
 
   const addOnClick = () => {
+    try {
+      setName(session.user.name);
+      setEmail(session.user.email);
+    } catch (e) {
+      return alert("Unable to get user's name and email. Please log in.");
+    }
     const filteredAmounts = Object.fromEntries(
       Object.entries(amounts).filter(([key, value]) => value > 0)
     );
     if (!name || !school || !email || !profession) {
+      console.log(name, email);
       return alert('Missing required fields');
     }
     if (!validateEmail(email)) {
@@ -33,6 +40,8 @@ export default function RequestPage({ data }) {
       const stockItem = data.find((item) => item.component === key);
       if (amounts[key] > stockItem.available) {
         return alert("You can't request more than available stock");
+      } else if (amounts[key] < 0) {
+        return alert('Invalid number of stock');
       }
     });
     axios

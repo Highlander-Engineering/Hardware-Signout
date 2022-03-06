@@ -33,14 +33,15 @@ export default async function handler(req, res) {
   try {
     await sheet.addRows(componentsCombinedArr);
     const TotalInventoryRows = await totalSheet.getRows();
-    await TotalInventoryRows.forEach((item) => {
-      if (item['Component'] in reqData.amounts) {
-        item['Available Stock'] -= reqData.amounts[item['Component']];
-        item.save();
-      }
-    });
+    // await TotalInventoryRows.forEach((item) => {
+    //   if (item['Component'] in reqData.amounts) {
+    //     item['Available Stock'] -= reqData.amounts[item['Component']];
+    //     item.save();
+    //   }
+    // });
     const { origin } = absoluteUrl(req);
 
+    // Sending confirmation email
     axios
       .post(`${origin}/api/sendEmail`, {
         name: reqData.name,
