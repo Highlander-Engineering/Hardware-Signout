@@ -21,8 +21,8 @@ export default function RequestPage({ data }) {
 
   const addOnClick = async () => {
     try {
-      setName(session.user.name);
-      setEmail(session.user.email);
+      setName(session?.user?.name);
+      setEmail(session?.user?.email);
     } catch (e) {
       return alert("Unable to get user's name and email. Please log in.");
     }
@@ -30,7 +30,11 @@ export default function RequestPage({ data }) {
       Object.entries(amounts).filter(([key, value]) => value > 0)
     );
     if (!name || !school || !email || !profession) {
-      console.log(name, email);
+      console.log('Name', name);
+      console.log('School', school);
+      console.log('Email', email);
+      console.log('profession', profession);
+
       return alert('Missing required fields');
     }
     if (!validateEmail(email)) {
@@ -150,7 +154,7 @@ export default function RequestPage({ data }) {
             </label>
           </div>
           <h1 className="text-2xl mt-5">Available Components</h1>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 ">
             {data.map((item, i) => {
               return (
                 <>
