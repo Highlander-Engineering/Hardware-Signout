@@ -173,6 +173,7 @@ export default function RequestPage({ status, data, name, email }) {
                           alt={item.component}
                           height="100"
                           width="100"
+                          className="rounded-md hover:scale-95"
                         />
                       ) : (
                         <div>Image unable to load</div>

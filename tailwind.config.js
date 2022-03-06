@@ -9,7 +9,7 @@ module.exports = {
         'he-purple': '#5063A9',
         'he-beige': '#F5F5DC',
       },
-      },
+    },
   },
   plugins: [],
 };

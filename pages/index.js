@@ -9,7 +9,6 @@ export default function Home() {
   const { status, data: session } = useSession();
   const router = useRouter();
   if (status === 'loading') return null;
-  console.log(session);
   return (
     <div className="h-screen flex justify-center items-center flex-col bg-he-beige">
       <Head>
@@ -29,7 +28,7 @@ export default function Home() {
         <div className="">
           <button
             onClick={() => signIn(['google'])}
-            className="border rounded px-4 py-2 flex gap-2 border-black hover:text-slate-100 hover:bg-he-purple hover:border-he-purple"
+            className="border rounded px-4 py-2 flex gap-2 border-black hover:text-slate-100 hover:bg-he-purple hover:border-he-purple hover:scale-95 transition-all"
           >
             <img src="/google_logo.svg" />
             Sign in with Google
@@ -42,7 +41,7 @@ export default function Home() {
             Signed in as {session.user.name ? session.user.name : 'NULL'}
           </p>
           <button
-            className="border bg-blue-500 text-white rounded px-4 py-2 text-lg"
+            className="border bg-blue-500 text-white rounded px-4 py-2 text-lg hover:scale-95 transition-all"
             onClick={() => {
               router.push('/request');
             }}
@@ -50,7 +49,7 @@ export default function Home() {
             Request
           </button>
           <button
-            className="border ml-3 bg-red-500 text-white rounded px-4 py-2 text-lg"
+            className="border ml-3 bg-red-500 text-white rounded px-4 py-2 text-lg hover:scale-95 transition-all"
             onClick={() => {
               signOut();
             }}
