@@ -2,6 +2,7 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 import { pageIds } from '../../lookup';
 import absoluteUrl from 'next-absolute-url';
 import axios from 'axios';
+import moment from 'moment-timezone';
 
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
@@ -46,7 +47,7 @@ export default async function handler(req, res) {
             Component: key,
             Profession: reqData.profession,
             Amount: reqData.amounts[key],
-            ['Date Out']: new Date(),
+            ['Date Out']: moment.tz(moment().unix(), 'America/Toronto'),
           });
         });
         sheet.addRows(componentsCombinedArr);
