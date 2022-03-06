@@ -4,28 +4,20 @@ import Head from 'next/head';
 import absoluteUrl from 'next-absolute-url';
 import { validateEmail } from '../components/utils';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 import Image from 'next/image';
 
-export default function RequestPage({ data }) {
+export default function RequestPage({ status, data, name, email }) {
   const router = useRouter();
 
-  const { status, data: session } = useSession();
-  const [name, setName] = useState('');
+  // const { status, data: session } = useSession();
   const [school, setSchool] = useState('');
-  const [email, setEmail] = useState('');
   const [profession, setProfession] = useState('');
   const [amounts, setAmounts] = useState(
     data.reduce((obj, item) => Object.assign(obj, { [item.component]: 0 }), {})
   );
 
   const addOnClick = async () => {
-    try {
-      setName(session?.user?.name);
-      setEmail(session?.user?.email);
-    } catch (e) {
-      return alert("Unable to get user's name and email. Please log in.");
-    }
     const filteredAmounts = Object.fromEntries(
       Object.entries(amounts).filter(([key, value]) => value > 0)
     );
@@ -66,7 +58,7 @@ export default function RequestPage({ data }) {
         console.log(error);
       });
   };
-  if (status === 'loading') return null;
+  // if (status === 'loading') return null;
   if (status === 'unauthenticated')
     return (
       <>
@@ -110,16 +102,16 @@ export default function RequestPage({ data }) {
         <div className="flex flex-col gap-3 mx-4">
           <input
             placeholder="Name"
-            value={session.user?.name}
-            onChange={(e) => setName(e.target.value)}
-            readOnly={session.user.email ? true : false}
+            value={name}
+            // onChange={(e) => setName(e.target.value)}
+            readOnly={name ? true : false}
             className="pl-3 py-1 border rounded-lg cursor-default select-none"
           />
           <input
             placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={session.user?.email}
-            readOnly={session.user.email ? true : false}
+            // onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            readOnly={email ? true : false}
             required={true}
             className="pl-3 py-1 border rounded-lg cursor-default select-none"
           />
@@ -204,12 +196,25 @@ export default function RequestPage({ data }) {
 }
 export async function getServerSideProps(context) {
   const { origin } = absoluteUrl(context.req);
+  const { user } = await getSession({ req: context.req });
+  if (!user) {
+    return {
+      props: {
+        status: 'unauthenticated',
+      },
+    };
+  }
   const data = await axios
     .get(`${origin}/api/getAvailableComponent`)
     .then((res) => {
       return res.data.data;
     });
   return {
-    props: { data }, // will be passed to the page component as props
+    props: {
+      status: 'authenticated',
+      data,
+      name: user.name,
+      email: user.email,
+    }, // will be passed to the page component as props
   };
 }

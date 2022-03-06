@@ -20,7 +20,6 @@ export default async function handler(req, res) {
   const componentsCombinedArr = [];
 
   try {
-    await sheet.addRows(componentsCombinedArr);
     const TotalInventoryRows = await totalSheet.getRows();
 
     const checkValidStock = new Promise((resolve, reject) => {
@@ -50,6 +49,7 @@ export default async function handler(req, res) {
             ['Date Out']: new Date(),
           });
         });
+        sheet.addRows(componentsCombinedArr);
 
         // Sending confirmation email
         const { origin } = absoluteUrl(req);
