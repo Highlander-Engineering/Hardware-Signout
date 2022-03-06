@@ -5,6 +5,7 @@ import absoluteUrl from 'next-absolute-url';
 import { validateEmail } from '../components/utils';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 export default function RequestPage({ data }) {
   const router = useRouter();
@@ -61,13 +62,15 @@ export default function RequestPage({ data }) {
       <>
         <div className="flex flex-col items-center justify-center h-screen">
           <h1 className="text-4xl mb-5">Please Sign In First</h1>
-          <button className="bg-blue-300 text-white rounded px-4 py-2">
+          <button
+            className="bg-blue-300 text-white rounded px-4 py-2"
+            onClick={() => router.push('/')}
+          >
             Go Home
           </button>
         </div>
       </>
     );
-  console.log(session);
   if (status === 'authenticated')
     return (
       <div className="h-screen overflow-hidden bg-he-beige">
@@ -83,21 +86,30 @@ export default function RequestPage({ data }) {
           {' '}
           {'← '}Home
         </button>
-        <h1 className="text-3xl font-bold text-center mb-10 text-he-purple">
-          Request Hardware Component
-        </h1>
+        <div className="flex items-center justify-center gap-5 mb-9">
+          <Image
+            src="/assets/transparent_logo.png"
+            alt="Logo"
+            width="70"
+            height="70"
+          />
+          <h1 className="text-3xl font-bold text-center text-he-purple">
+            Request Hardware Component
+          </h1>
+        </div>
         <div className="flex flex-col gap-3 mx-4">
           <input
             placeholder="Name"
+            value={session.user.name}
             onChange={(e) => setName(e.target.value)}
-            required={true}
-            className="pl-3 py-1 border rounded-lg"
+            readOnly={session.user.email ? true : false}
+            className="pl-3 py-1 border rounded-lg cursor-default select-none"
           />
           <input
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
-            value={session.user.email}
-            readOnly={true}
+            value={session.user?.email}
+            readOnly={session.user.email ? true : false}
             required={true}
             className="pl-3 py-1 border rounded-lg cursor-default select-none"
           />

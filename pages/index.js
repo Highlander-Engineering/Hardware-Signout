@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 export default function Home() {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
   if (status === 'loading') return null;
+  console.log(session);
   return (
     <div className="h-screen flex justify-center items-center flex-col bg-he-beige">
       <Head>
@@ -21,7 +22,7 @@ export default function Home() {
         height="300"
         alt="Logo"
       />
-      <h1 className="text-4xl font-bold text-he-purple mb-10">
+      <h1 className="text-4xl font-bold text-he-purple mb-6">
         Highlander Engineering Hardware Request
       </h1>
       {status === 'unauthenticated' && (
@@ -37,6 +38,9 @@ export default function Home() {
       )}
       {status === 'authenticated' && (
         <div>
+          <p className="text-center mb-4 font-bold">
+            Signed in as {session.user.name ? session.user.name : 'NULL'}
+          </p>
           <button
             className="border bg-blue-500 text-white rounded px-4 py-2 text-lg"
             onClick={() => {

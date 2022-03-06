@@ -7,15 +7,26 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
     }),
   ],
+  jwt: {
+    encryption: true,
+  },
   secret: 'TODO: Add better secret',
   callbacks: {
     async jwt(token, account) {
       if (account?.accessToken) {
         token.accessToken = account.accessToken;
       }
-      return token;
+      console.log(token.token);
+      return token.token;
     },
     redirect: async (url, _baseUrl) => {
       if (url === '/request') {
