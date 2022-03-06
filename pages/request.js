@@ -11,9 +11,9 @@ export default function RequestPage({ data }) {
   const router = useRouter();
 
   const { status, data: session } = useSession();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(session.user?.name || '');
   const [school, setSchool] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(session.user?.email || '');
   const [profession, setProfession] = useState('');
   const [amounts, setAmounts] = useState(
     data.reduce((obj, item) => Object.assign(obj, { [item.component]: 0 }), {})
@@ -100,7 +100,7 @@ export default function RequestPage({ data }) {
         <div className="flex flex-col gap-3 mx-4">
           <input
             placeholder="Name"
-            value={session.user.name}
+            value={session.user?.name}
             onChange={(e) => setName(e.target.value)}
             readOnly={session.user.email ? true : false}
             className="pl-3 py-1 border rounded-lg cursor-default select-none"
