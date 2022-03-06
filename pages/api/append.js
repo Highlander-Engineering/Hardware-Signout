@@ -59,6 +59,9 @@ export default async function handler(req, res) {
           .post(`${origin}/api/sendEmail`, {
             name: reqData.name,
             email: reqData.email,
+            data: reqData.amounts,
+            school: reqData.school,
+            role: reqData.profession
           })
           .then(function () {
             return res.status(200).json({ status: 'Sent' });

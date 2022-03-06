@@ -15,13 +15,17 @@ const transporter = nodemailer.createTransport(
 );
 
 export default async function handler(req, res) {
-  const { name, email } = req.body;
-  console.log(name, email);
+  const { name, email, data, school, role } = req.body;
+  const buildList = () => {
+    let res = '';
+    Object.keys(data).forEach((key) => (res += `${key}: ${data[key]}\n`));
+    return res;
+  };
   const mailOptions = {
     from: GMAIL,
     to: email,
-    subject: 'Your Hardware Request - Highlander Engineering',
-    text: `Hello ${name},\n\nWe have received your request, please wait for a confirmation email for you to pickup\n\n<More instructions goes here>`,
+    subject: 'Your Hardware Request - Highlander Engineering Challenge',
+    text: `Hello ${name},\n\nWe have received your request, please wait for a confirmation email for you to pickup\n\nSchool: ${school}, ${role}\n\nYour Request: \n\n${buildList()}\n\n - Highlander Engineering Challenge`,
   };
   await transporter.sendMail(mailOptions, function (error, info) {
     if (!error) {
