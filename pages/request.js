@@ -165,12 +165,16 @@ export default function RequestPage({ data }) {
                       className="px-2 rounded-md outline-none py-1"
                     />
                     <div>
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.component}
-                        height="100"
-                        width="100"
-                      />
+                      {item.imageUrl ? (
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.component}
+                          height="100"
+                          width="100"
+                        />
+                      ) : (
+                        <div>Image unable to load</div>
+                      )}
                     </div>
                   </div>
                 </>
