@@ -47,7 +47,7 @@ export default async function handler(req, res) {
             Component: key,
             Profession: reqData.profession,
             Amount: reqData.amounts[key],
-            ['Date Out']: moment.tz(moment().unix(), 'America/Toronto'),
+            ['Date Out']: moment().tz('American/Toronto').format(),
           });
         });
         sheet.addRows(componentsCombinedArr);
