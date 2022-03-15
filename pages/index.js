@@ -15,12 +15,20 @@ export default function Home() {
         <title>Highlander Engineering Sign Out</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Image
-        src="/assets/transparent_logo.png"
-        width="300"
-        height="300"
-        alt="Logo"
-      />
+      <div className="flex justify-center items-center gap-10">
+        <Image
+          src="/assets/transparent_logo.png"
+          width="300"
+          height="300"
+          alt="Logo"
+        />
+        <Image
+          src="/assets/uwe_logo.png"
+          width={'400'}
+          height="100"
+          alt="UWE Logo"
+        />
+      </div>
       <h1 className="text-4xl font-bold text-he-purple mb-6">
         Highlander Engineering Hardware Request
       </h1>
