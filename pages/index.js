@@ -15,7 +15,7 @@ export default function Home() {
         <title>Highlander Engineering Sign Out</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex justify-center items-center gap-10">
+      <div className="flex justify-center items-center flex-wrap">
         <Image
           src="/assets/transparent_logo.png"
           width="300"
@@ -29,7 +29,7 @@ export default function Home() {
           alt="UWE Logo"
         />
       </div>
-      <h1 className="text-4xl font-bold text-he-purple mb-6">
+      <h1 className="text-4xl font-bold text-he-purple mb-6 text-center">
         Highlander Engineering Hardware Request
       </h1>
       {status === 'unauthenticated' && (
